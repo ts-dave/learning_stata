@@ -1,0 +1,68 @@
+-----------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\STATA TRAINING\week3.log
+  log type:  text
+ opened on:   2 Feb 2026, 16:11:47
+
+. use "C:\Users\emson\Desktop\Files\STATA TRAINING\Frimingham heart study.dta"
+
+. ci mean glucose
+
+    Variable |        Obs        Mean    Std. err.       [95% conf. interval]
+-------------+---------------------------------------------------------------
+     glucose |         86    83.27907    2.934611        77.44428    89.11386
+
+. ci mean glucose , level(95)
+
+    Variable |        Obs        Mean    Std. err.       [95% conf. interval]
+-------------+---------------------------------------------------------------
+     glucose |         86    83.27907    2.934611        77.44428    89.11386
+
+. ci mean glucose, level(98)
+
+    Variable |        Obs        Mean    Std. err.       [98% conf. interval]
+-------------+---------------------------------------------------------------
+     glucose |         86    83.27907    2.934611        76.32104     90.2371
+
+. ci proportion cvd
+
+                                                            Binomial exact   
+    Variable |        Obs  Proportion    Std. err.       [95% conf. interval]
+-------------+---------------------------------------------------------------
+         cvd |         95    .3157895    .0476905        .2242198    .4192074
+
+. prtest hyperten == 0.5
+
+One-sample test of proportion                   Number of obs      =        95
+
+------------------------------------------------------------------------------
+    Variable |       Mean   Std. err.                     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    hyperten |   .6947368   .0472482                       .602132    .7873417
+------------------------------------------------------------------------------
+    p = proportion(hyperten)                                      z =   3.7961
+H0: p = 0.5
+
+     Ha: p < 0.5                 Ha: p != 0.5                   Ha: p > 0.5
+ Pr(Z < z) = 0.9999         Pr(|Z| > |z|) = 0.0001          Pr(Z > z) = 0.0001
+
+. prtest death, by(cvd)
+
+Two-sample test of proportions                no cvd: Number of obs =       65
+                                                 cvd: Number of obs =       30
+------------------------------------------------------------------------------
+       Group |       Mean   Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      no cvd |   .3076923   .0572468                      .1954906     .419894
+         cvd |         .6   .0894427                      .4246955    .7753045
+-------------+----------------------------------------------------------------
+        diff |  -.2923077   .1061941                     -.5004444    -.084171
+             |  under H0:    .108131    -2.70   0.007
+------------------------------------------------------------------------------
+        diff = prop(no cvd) - prop(cvd)                           z =  -2.7033
+    H0: diff = 0
+
+    Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(Z < z) = 0.0034         Pr(|Z| > |z|) = 0.0069          Pr(Z > z) = 0.9966
+
+. exit, clear

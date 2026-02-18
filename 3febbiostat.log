@@ -1,0 +1,295 @@
+-----------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\STATA TRAINING\3febbiostat.log
+  log type:  text
+ opened on:   3 Feb 2026, 11:28:13
+
+. use "C:\Users\emson\Desktop\Files\STATA TRAINING\Framingham.dta"
+
+. describe
+
+Contains data from C:\Users\emson\Desktop\Files\STATA TRAINING\Framingham.dta
+ Observations:            95                  
+    Variables:            19                  7 Nov 2023 12:07
+-----------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+-----------------------------------------------------------------------------------------------------------------
+age             byte    %8.0g                 age (years) at examination
+bmi             float   %9.0g                 body mass index (kg/(m*m)
+cursmoke        byte    %8.0g                 current cig smoker y/n
+cvd             byte    %8.0g                 incident hosp mi or stroke, fatal or non
+death           byte    %8.0g                 death indicator
+diabetes        byte    %8.0g                 diabetic y/n
+diabp           float   %9.0g                 diastolic bp mmhg
+educ            byte    %8.0g                 0-11 years, hs or ged, some coll, coll grad+
+glucose         int     %8.0g                 casual glucose mg/dl
+heartrte        int     %8.0g                 ventricular rate (beats/min)
+hyperten        byte    %8.0g                 incident hypertension
+period          byte    %8.0g                 examination cycle
+randid          long    %12.0g                random id
+sex             byte    %8.0g                 sex
+stroke          byte    %8.0g                 incident stroke fatal/non-fatal
+sysbp           float   %9.0g                 systolic bp mmhg
+totchol         int     %8.0g                 serum cholesterol mg/dl
+_est_model1     byte    %8.0g                 esample() from estimates store
+_est_model2     byte    %8.0g                 esample() from estimates store
+-----------------------------------------------------------------------------------------------------------------
+Sorted by: 
+
+. codebook, compact
+
+Variable     Obs Unique      Mean    Min      Max  Label
+-----------------------------------------------------------------------------------------------------------------
+age           95     33  50.98947     35       69  age (years) at examination
+bmi           95     90  25.67758  18.18    36.57  body mass index (kg/(m*m)
+cursmoke      95      2  .4526316      0        1  current cig smoker y/n
+cvd           95      2  .3157895      0        1  incident hosp mi or stroke, fatal or non
+death         95      2        .4      0        1  death indicator
+diabetes      95      2  .0526316      0        1  diabetic y/n
+diabp         95     46  83.16316     62      133  diastolic bp mmhg
+educ          93      4  1.892473      1        4  0-11 years, hs or ged, some coll, coll grad+
+glucose       86     42  83.27907     56      294  casual glucose mg/dl
+heartrte      95     35  73.53684     50      107  ventricular rate (beats/min)
+hyperten      95      2  .6947368      0        1  incident hypertension
+period        95      1         1      1        1  examination cycle
+randid        95     95   5887138  12629  9964282  random id
+sex           95      2  1.526316      1        2  sex
+stroke        95      2  .1052632      0        1  incident stroke fatal/non-fatal
+sysbp         95     61  133.6579     90      209  systolic bp mmhg
+totchol       91     73  241.5495    157      390  serum cholesterol mg/dl
+_est_model1   95      1         1      1        1  esample() from estimates store
+_est_model2   95      1         1      1        1  esample() from estimates store
+-----------------------------------------------------------------------------------------------------------------
+
+. browse
+
+. tab sex
+
+        sex |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         45       47.37       47.37
+          2 |         50       52.63      100.00
+------------+-----------------------------------
+      Total |         95      100.00
+
+. tab smoke
+variable smoke not found
+r(111);
+
+. label define sexlab 1 "male" 2 "female"
+
+. label value sex sexlab
+
+. browse
+
+. tab sex
+
+        sex |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       male |         45       47.37       47.37
+     female |         50       52.63      100.00
+------------+-----------------------------------
+      Total |         95      100.00
+
+. browse
+
+. tab cursmoke cvd death
+too many variables specified
+r(103);
+
+. tab cursmoke
+
+current cig |
+ smoker y/n |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |         52       54.74       54.74
+          1 |         43       45.26      100.00
+------------+-----------------------------------
+      Total |         95      100.00
+
+. label define yeslab 0 "no" 1 "yes"
+
+. label value cursmoke diabetes
+
+. browse
+
+. label value cursmoke cvd death diabetes yeslab
+
+. browse
+
+. label value hyperten stroke yeslab
+
+. browse
+
+. tab stroke
+
+   incident |
+     stroke |
+fatal/non-f |
+       atal |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         no |         85       89.47       89.47
+        yes |         10       10.53      100.00
+------------+-----------------------------------
+      Total |         95      100.00
+
+. recode age (30/39=1 "30-39") (40/49=2 "40-49") (50/59=3 "50-59") (60/69=4 "60-69"), gen(age_cat)
+(95 differences between age and age_cat)
+
+. browse
+
+. tab age_cat
+
+  RECODE of |
+   age (age |
+ (years) at |
+examination |
+          ) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      30-39 |         12       12.63       12.63
+      40-49 |         30       31.58       44.21
+      50-59 |         33       34.74       78.95
+      60-69 |         20       21.05      100.00
+------------+-----------------------------------
+      Total |         95      100.00
+
+. help recode
+
+. tab age_cat
+
+  RECODE of |
+   age (age |
+ (years) at |
+examination |
+          ) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      30-39 |         12       12.63       12.63
+      40-49 |         30       31.58       44.21
+      50-59 |         33       34.74       78.95
+      60-69 |         20       21.05      100.00
+------------+-----------------------------------
+      Total |         95      100.00
+
+. order age_cat, after(age)
+
+. browse
+
+. generate bmi_cat = .
+(95 missing values generated)
+
+. replace bmi_cat if bmi < 18.5
+=exp required
+r(100);
+
+. replace bmi_cate = 1 if bmi < 18.5
+variable bmi_cate not found
+r(111);
+
+. replace bmi_cat = 1 if bmi < 18.5
+(1 real change made)
+
+. browse
+
+. order bmi_cat, after(bmi)
+
+. browse
+
+. help tab
+
+. tab cursmoke death
+
+   current |
+cig smoker |    death indicator
+       y/n |        no        yes |     Total
+-----------+----------------------+----------
+        no |        28         24 |        52 
+       yes |        29         14 |        43 
+-----------+----------------------+----------
+     Total |        57         38 |        95 
+
+. tab cursmoke death, ro
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+   current |
+cig smoker |    death indicator
+       y/n |        no        yes |     Total
+-----------+----------------------+----------
+        no |        28         24 |        52 
+           |     53.85      46.15 |    100.00 
+-----------+----------------------+----------
+       yes |        29         14 |        43 
+           |     67.44      32.56 |    100.00 
+-----------+----------------------+----------
+     Total |        57         38 |        95 
+           |     60.00      40.00 |    100.00 
+
+. tab death cursmoke
+
+           |  current cig smoker
+     death |          y/n
+ indicator |        no        yes |     Total
+-----------+----------------------+----------
+        no |        28         29 |        57 
+       yes |        24         14 |        38 
+-----------+----------------------+----------
+     Total |        52         43 |        95 
+
+. tab death cursmoke, ro
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+           |  current cig smoker
+     death |          y/n
+ indicator |        no        yes |     Total
+-----------+----------------------+----------
+        no |        28         29 |        57 
+           |     49.12      50.88 |    100.00 
+-----------+----------------------+----------
+       yes |        24         14 |        38 
+           |     63.16      36.84 |    100.00 
+-----------+----------------------+----------
+     Total |        52         43 |        95 
+           |     54.74      45.26 |    100.00 
+
+. tab death cursmok, col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+           |  current cig smoker
+     death |          y/n
+ indicator |        no        yes |     Total
+-----------+----------------------+----------
+        no |        28         29 |        57 
+           |     53.85      67.44 |     60.00 
+-----------+----------------------+----------
+       yes |        24         14 |        38 
+           |     46.15      32.56 |     40.00 
+-----------+----------------------+----------
+     Total |        52         43 |        95 
+           |    100.00     100.00 |    100.00 
+
+. help table
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\STATA TRAINING\3febbiostat.log
+  log type:  text
+ closed on:   3 Feb 2026, 12:26:38
+-----------------------------------------------------------------------------------------------------
