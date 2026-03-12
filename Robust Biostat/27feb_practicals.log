@@ -1,0 +1,336 @@
+-------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat\27feb_practica
+> ls.log
+  log type:  text
+ opened on:  27 Feb 2026, 09:17:50
+
+. cd "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat"
+C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat
+
+. cd "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat"
+C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat
+
+. do "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat\examples_practicals.d
+> o"
+
+. clear
+
+. set more off
+
+. cd "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat"
+C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat
+
+. 
+. 
+. 
+. *********Session 1 Introduction and Revision****************
+. 
+. //Sampling distribution of sample mean
+. 
+. // Step 1: Simulate systolic blood pressure data for 100 individuals
+. clear
+
+. set obs 100 // Population of 100 people
+Number of observations (_N) was 0, now 100.
+
+. gen id = _n // Create an ID for each individual
+
+. gen systolic_bp = round(rnormal(120, 15)) // Simulate systolic BP and store as integer
+
+. save systolic_bp.dta, replace // Save the dataset as systolic_bp.dta
+(file systolic_bp.dta not found)
+file systolic_bp.dta saved
+
+. 
+. // Step 2: Remove any existing file that might cause conflict
+. cap erase sample_means.dta // Delete the file if it already exists
+
+. 
+. // Step 3: Set up a postfile to store the sample means for 1000 repetitions
+. tempname results
+
+. postfile `results' sample_mean using sample_means.dta
+
+. 
+. // Step 4: Set the seed for reproducibility
+. set seed 12345
+
+. 
+. // Step 5: Loop through 100000 repetitions to sample 10 individuals, calculate sample mean
+. forval i = 1/100000 {
+  2.     // Use the original dataset for sampling
+.     preserve
+  3.     use systolic_bp.dta, clear
+  4.     
+.     // Sample 10 individuals
+.     bsample 10
+  5.     
+.     // Calculate the sample mean
+.     quietly summarize systolic_bp
+  6.     local mean = r(mean)
+  7.     
+.     // Post the sample mean to the postfile
+.     post `results' (`mean')
+  8.     
+.     // Restore original dataset
+.     restore
+  9. }
+
+. 
+. // Step 6: Close the postfile
+. postclose `results'
+
+. 
+. // Step 7: Load the dataset containing sample means
+. use sample_means.dta, clear
+
+. 
+. // Step 8: Plot the histogram of the sample means
+. histogram sample_mean, normal /// 
+>     title("Histogram of Sample Means for Systolic BP") ///
+>     xlabel(115(5)125) ///
+>     ylabel(, grid) ///
+>     legend(off)
+(bin=50, start=97.099998, width=.85000015)
+
+. 
+. 
+. *********Example 1
+. 
+. import excel "/Users/samuelbosomprah/Documents/Sam/Stuffs/SPH/Dept of Biostatistics/MSc in Bios
+> tatistics/Teaching materials/BSTT607_Robust statistics/dataset/example1.xlsx", sheet("dataset")
+>  firstrow clear
+file /Users/samuelbosomprah/Documents/Sam/Stuffs/SPH/Dept of Biostatistics/MSc in Biostatistics/T
+> eaching materials/BSTT607_Robust statistics/dataset/example1.xlsx not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. do "C:\Users\emson\AppData\Local\Temp\STD3f28_000000.tmp"
+
+. cd "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat"
+C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat
+
+. 
+end of do-file
+
+. do "C:\Users\emson\AppData\Local\Temp\STD3f28_000000.tmp"
+
+. clear all
+
+. set more off
+
+. set seed 26022026
+
+. 
+. ***************************************
+. * 1) SIMULATE A REALISTIC STUDY SETUP
+. ***************************************
+. * Example: lifestyle intervention effect on hypertension control (yes/no)
+. * Outcome: control = 1 if BP controlled at follow-up
+. * Predictors: intervention, age, sex, BMI, baseline SBP, diabetes
+. 
+. set obs 800
+Number of observations (_N) was 0, now 800.
+
+. gen long id = _n
+
+. 
+. * Core covariates
+. gen byte intervention = (runiform() < 0.50)                 // randomized
+
+. gen byte female       = (runiform() < 0.55)
+
+. gen double age        = rnormal(48, 12)
+
+. replace age = max(18, min(age, 85))
+(5 real changes made)
+
+. 
+. gen double bmi        = rnormal(28, 5)
+
+. replace bmi = max(16, min(bmi, 55))
+(4 real changes made)
+
+. 
+. gen byte diabetes     = (runiform() < invlogit(-2 + 0.04*(age-50) + 0.07*(bmi-28)))
+
+. 
+. * Baseline SBP (correlated with age, bmi, diabetes)
+. gen double sbp0 = rnormal(150 + 0.35*(age-50) + 0.9*(bmi-28) + 7*diabetes, 12)
+
+. 
+. * TRUE data-generating model for control (higher = more likely controlled)
+. * Lifestyle intervention improves control; older age, higher BMI, higher baseline SBP, diabetes
+>  reduce control
+. gen double xb_true = ///
+>     0.50*intervention ///
+>   - 0.03*(age-50) ///
+>   - 0.05*(bmi-28) ///
+>   - 0.04*((sbp0-150)/10) ///
+>   - 0.60*diabetes ///
+>   + 0.15*female
+
+. 
+. gen double p_true = invlogit(xb_true)
+
+. gen byte control  = (runiform() < p_true)
+
+. label define yn 0 "No" 1 "Yes"
+
+. label values control yn
+
+. label values intervention yn
+
+. label values female yn
+
+. label values diabetes yn
+
+. 
+end of do-file
+
+. br
+
+. sum
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+          id |        800       400.5    231.0844          1        800
+intervention |        800      .50125    .5003112          0          1
+      female |        800      .54125    .4986073          0          1
+         age |        800    48.06298    11.49061         18   83.02974
+         bmi |        800    28.13268     5.11388         16   44.69497
+-------------+---------------------------------------------------------
+    diabetes |        800        .125    .3309258          0          1
+        sbp0 |        800    150.0984    14.39343   109.0204   201.4841
+     xb_true |        800    .3078959    .6046739  -1.661338    1.92265
+      p_true |        800    .5710041    .1381855   .1595825   .8724336
+     control |        800      .56375    .4962295          0          1
+
+. sum age
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |        800    48.06298    11.49061         18   83.02974
+
+. tab intervention
+
+interventio |
+          n |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         No |        399       49.88       49.88
+        Yes |        401       50.13      100.00
+------------+-----------------------------------
+      Total |        800      100.00
+
+. br
+
+. do "C:\Users\emson\AppData\Local\Temp\STD3f28_000000.tmp"
+
+. ***************************************
+. * 2) INJECT HIGH-LEVERAGE OBSERVATIONS
+. ***************************************
+. * Create a small set of extreme covariate patterns (unusual X rows)
+. * These points can pull estimates even if y isn't "wrong".
+. 
+. gen byte leverage = 0
+
+. local L = 10
+
+. forvalues j = 1/`L' {
+  2.     local i = 790 + `j'   // last 10 ids
+  3.     replace leverage = 1 in `i'
+  4. }
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+
+. 
+. * Make them extreme in X-space
+. replace age  = 85     if leverage
+(10 real changes made)
+
+. replace bmi  = 48     if leverage
+(10 real changes made)
+
+. replace sbp0 = 220    if leverage
+(10 real changes made)
+
+. replace diabetes = 1  if leverage
+(7 real changes made)
+
+. replace female   = (runiform()<0.3) if leverage
+(6 real changes made)
+
+. 
+. * Recompute true probability for these (so their x is extreme but model-consistent)
+. replace xb_true = ///
+>     0.50*intervention ///
+>   - 0.03*(age-50) ///
+>   - 0.05*(bmi-28) ///
+>   - 0.04*((sbp0-150)/10) ///
+>   - 0.60*diabetes ///
+>   + 0.15*female if leverage
+(10 real changes made)
+
+. replace p_true = invlogit(xb_true) if leverage
+(10 real changes made)
+
+. replace control = (runiform() < p_true) if leverage
+(6 real changes made)
+
+. 
+. ***************************************
+. * 3) INJECT "BINARY OUTLIERS" (DISCORDANT y)
+. ***************************************
+. * "Outlier" in logistic sense = p̂ extreme but observed y opposite.
+. * We flip outcomes for a few extreme predicted probabilities.
+. 
+. * Identify cases with very high/low true p
+. gen byte cand_hi = (p_true > 0.97)
+
+. gen byte cand_lo = (p_true < 0.03)
+
+. 
+. * Flip 8 high-prob successes into failures and 8 low-prob failures into successes
+. gen double u = runiform()
+
+. sort u
+
+. gen byte flip = 0
+
+. replace flip = 1 if cand_hi & _n<=8
+(0 real changes made)
+
+. replace flip = 1 if cand_lo & _n>8 & _n<=16
+(0 real changes made)
+
+. replace control = 1-control if flip
+(0 real changes made)
+
+. 
+. drop u cand_hi cand_lo
+
+. 
+. sort id
+
+. 
+. save hypothetical_study,replace
+(file hypothetical_study.dta not found)
+file hypothetical_study.dta saved
+
+. 
+. 
+end of do-file
+
+. exit, clear
