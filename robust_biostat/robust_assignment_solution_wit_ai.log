@@ -1,0 +1,193 @@
+----------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat\robust_assi
+> gnment_solution_wit_ai.log
+  log type:  text
+ opened on:  17 Apr 2026, 22:26:30
+
+. use "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat\Data\assessment.d
+> ta"
+
+. describe
+
+Contains data from C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat\Data\
+> assessment.dta
+ Observations:           200                  
+    Variables:            13                  20 Nov 2024 11:10
+----------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+----------------------------------------------------------------------------------------------
+id              float   %9.0g                 Participant ID
+intervention    float   %9.0g                 Intervention (1=Yes, 0=No)
+age             float   %9.0g                 Age (years)
+sex             float   %9.0g                 Sex (1=Male, 0=Female)
+education       float   %9.0g      edu_levels
+                                              Education Level
+marital_status  float   %9.0g      marital    Marital Status (1=Married, 0=Unmarried)
+employment_st~s float   %10.0g     employment
+                                              Employment Status (1=Employed, 0=Unemployed)
+alcohol_consu~n float   %11.0g     alcohol    Alcohol Consumption (1=Drinker, 0=Non-drinker)
+bmi             float   %9.0g                 Body Mass Index (BMI)
+smoking         float   %9.0g                 Smoking Status (1=Smoker, 0=Non-smoker)
+cholesterol     float   %9.0g                 Cholesterol (mg/dL)
+sbp             float   %9.0g                 Systolic Blood Pressure (mmHg)
+dbp             float   %9.0g                 Diastolic Blood Pressure (mmHg)
+----------------------------------------------------------------------------------------------
+Sorted by: 
+
+. br
+
+. misstable summarize
+(variables nonmissing or string)
+
+. help(summarize)
+
+. ** First you describe your data **
+
+. describe
+
+Contains data from C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Bio
+> stat\Data\assessment.dta
+ Observations:           200                  
+    Variables:            13                  20 Nov 2024 11:10
+------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+------------------------------------------------------------------------------------
+id              float   %9.0g                 Participant ID
+intervention    float   %9.0g                 Intervention (1=Yes, 0=No)
+age             float   %9.0g                 Age (years)
+sex             float   %9.0g                 Sex (1=Male, 0=Female)
+education       float   %9.0g      edu_levels
+                                              Education Level
+marital_status  float   %9.0g      marital    Marital Status (1=Married,
+                                                0=Unmarried)
+employment_st~s float   %10.0g     employment
+                                              Employment Status (1=Employed,
+                                                0=Unemployed)
+alcohol_consu~n float   %11.0g     alcohol    Alcohol Consumption (1=Drinker,
+                                                0=Non-drinker)
+bmi             float   %9.0g                 Body Mass Index (BMI)
+smoking         float   %9.0g                 Smoking Status (1=Smoker,
+                                                0=Non-smoker)
+cholesterol     float   %9.0g                 Cholesterol (mg/dL)
+sbp             float   %9.0g                 Systolic Blood Pressure (mmHg)
+dbp             float   %9.0g                 Diastolic Blood Pressure (mmHg)
+------------------------------------------------------------------------------------
+Sorted by: 
+
+. ** Then now look for missing values **
+
+. misstable summarize
+(variables nonmissing or string)
+
+. ** Build table 1.**
+
+. ** Thus summary statistics to compare baseline data for intervention and control g
+> roups **
+
+. ** I reveals major imbalances between the two groups and that will inform your ana
+> lysis**
+
+. ** summarizing continuous variables separately for each group **
+
+. bysort intervention: summarize age bmi cholesterol sbp
+
+------------------------------------------------------------------------------------
+-> intervention = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |        100       50.07    11.24318         22         80
+         bmi |        100       20.35    15.07984          2         93
+ cholesterol |        100      153.12    2.152189        150        161
+         sbp |        100    150.1705     9.35925   108.5222   173.5641
+
+------------------------------------------------------------------------------------
+-> intervention = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |        100       51.36    9.251284         32         79
+         bmi |        100       17.41    11.50766          2         73
+ cholesterol |        100      153.24    2.000606        151        162
+         sbp |        100    131.0753    10.51754   113.1796   211.5916
+
+
+. ** summarizing categorical variables **
+
+. tabulate sex inervention, row
+variable inervention not found
+r(111);
+
+. tab sex intervention, row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+       Sex | Intervention (1=Yes,
+  (1=Male, |         0=No)
+ 0=Female) |         0          1 |     Total
+-----------+----------------------+----------
+         0 |        54         47 |       101 
+           |     53.47      46.53 |    100.00 
+-----------+----------------------+----------
+         1 |        46         53 |        99 
+           |     46.46      53.54 |    100.00 
+-----------+----------------------+----------
+     Total |       100        100 |       200 
+           |     50.00      50.00 |    100.00 
+
+. tabulate smoking intervention
+
+   Smoking |
+    Status |
+(1=Smoker, | Intervention (1=Yes,
+0=Non-smok |         0=No)
+       er) |         0          1 |     Total
+-----------+----------------------+----------
+         0 |        72         68 |       140 
+         1 |        28         32 |        60 
+-----------+----------------------+----------
+     Total |       100        100 |       200 
+
+. tabulate alcohol tabulation
+variable tabulation not found
+r(111);
+
+. tabulate alcohol intervention, row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+    Alcohol |
+Consumption |
+(1=Drinker, | Intervention (1=Yes,
+0=Non-drink |         0=No)
+        er) |         0          1 |     Total
+------------+----------------------+----------
+Non-drinker |        67         69 |       136 
+            |     49.26      50.74 |    100.00 
+------------+----------------------+----------
+    Drinker |        33         31 |        64 
+            |     51.56      48.44 |    100.00 
+------------+----------------------+----------
+      Total |       100        100 |       200 
+            |     50.00      50.00 |    100.00 
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\Robust Biostat\r
+> obust_assignment_solution_wit_ai.log
+  log type:  text
+ closed on:  17 Apr 2026, 23:40:04
+------------------------------------------------------------------------------------
