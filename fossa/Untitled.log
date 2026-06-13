@@ -1,0 +1,1240 @@
+--------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\Untitled.log
+  log type:  text
+ opened on:  13 Jun 2026, 00:54:45
+
+. use "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\data\Whitehall_fossa.dta"
+
+. browse
+
+. summary
+command summary is unrecognized
+r(199);
+
+. describe
+
+Contains data from C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\data\Whitehall_fos
+> sa.dta
+ Observations:         4,327                  
+    Variables:            17                  12 Jan 2023 16:58
+--------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------
+whl1_id         int     %8.0g                 WHL1_ID
+age_grp         byte    %9.0g      age4       AGE GROUP
+prior_cvd       float   %9.0g                 CVD
+prior_t2dm      byte    %8.0g                 DIAB
+prior_cancer    byte    %8.0g                 CANCER
+sbp             int     %8.0g                 SBP
+bmi             byte    %8.0g                 BMI
+bmi_grp4        byte    %11.0g     bmi_grp4   BMI GROUP
+hdlc            float   %9.0g                 HDLC
+ldlc            float   %9.0g                 LDLC
+chol            float   %9.0g                 CHOL
+currsmoker      byte    %8.0g                 CURRSMOKER
+frailty         byte    %8.0g                 FRAILTY
+vitd            float   %9.0g                 VitD
+cvd_death       float   %9.0g                 CVD_DEATH
+death           byte    %8.0g                 DEATH
+fu_years        float   %9.0g                 FOLLOW UP (YEARS)
+--------------------------------------------------------------------------------------------------
+Sorted by: whl1_id
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     whl1_id |      4,327       12164    1249.242      10001      14327
+     age_grp |      4,327    2.328403    .9431775          1          4
+   prior_cvd |      4,327    .2491333    .4325612          0          1
+  prior_t2dm |      4,327    .0600878    .2376769          0          1
+prior_cancer |      4,327    .0758031    .2647134          0          1
+-------------+---------------------------------------------------------
+         sbp |      4,318    130.7515    17.56559         86        230
+         bmi |      4,310    25.21694    3.262414         15         44
+    bmi_grp4 |      4,310    2.648028    .6525844          1          4
+        hdlc |      4,302     1.09219    .3755005        .05       3.07
+        ldlc |      4,302    3.367369    .7798521       1.05       6.81
+-------------+---------------------------------------------------------
+        chol |      4,322    5.510199     1.00712       2.24      10.77
+  currsmoker |      4,321    .1261282    .3320322          0          1
+     frailty |      4,327    2.950081    1.455077          1          5
+        vitd |      4,327    57.38998    18.00183   18.91585    419.893
+   cvd_death |      4,327    .1513751    .3584555          0          1
+-------------+---------------------------------------------------------
+       death |      4,327    .3526693    .4778561          0          1
+    fu_years |      4,327    6.812337    2.237941   .0311704        8.5
+
+. describe prior_cvd
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------
+prior_cvd       float   %9.0g                 CVD
+
+. codebook prior_cvd
+
+--------------------------------------------------------------------------------------------------
+prior_cvd                                                                                      CVD
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        3,249  0
+                        1,078  1
+
+. codebook frailty
+
+--------------------------------------------------------------------------------------------------
+frailty                                                                                    FRAILTY
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [1,5]                         Units: 1
+         Unique values: 5                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        1,013  1
+                          800  2
+                          758  3
+                          902  4
+                          854  5
+
+. tab frailty
+
+    FRAILTY |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      1,013       23.41       23.41
+          2 |        800       18.49       41.90
+          3 |        758       17.52       59.42
+          4 |        902       20.85       80.26
+          5 |        854       19.74      100.00
+------------+-----------------------------------
+      Total |      4,327      100.00
+
+. codebook frailty
+
+--------------------------------------------------------------------------------------------------
+frailty                                                                                    FRAILTY
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [1,5]                         Units: 1
+         Unique values: 5                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        1,013  1
+                          800  2
+                          758  3
+                          902  4
+                          854  5
+
+. describe frailty
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------
+frailty         byte    %8.0g                 FRAILTY
+
+. browse frailty
+
+. describe chol
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------
+chol            float   %9.0g                 CHOL
+
+. codebook chol
+
+--------------------------------------------------------------------------------------------------
+chol                                                                                          CHOL
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [2.24,10.77]                  Units: .01
+         Unique values: 527                       Missing .: 5/4,327
+
+                  Mean:  5.5102
+             Std. dev.: 1.00712
+
+           Percentiles:     10%       25%       50%       75%       90%
+                           4.28      4.85      5.47      6.15      6.78
+
+. summarize chol
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+        chol |      4,322    5.510199     1.00712       2.24      10.77
+
+. tabstat chol, stat(n mean median sd iqr range)
+
+    Variable |         N      Mean       p50        SD       IQR     Range
+-------------+------------------------------------------------------------
+        chol |      4322  5.510199      5.47   1.00712       1.3      8.53
+--------------------------------------------------------------------------
+
+. ?tabstat
+? is not a valid command name
+r(199);
+
+. help(tabstat)
+
+. graph bar (count), over (age_grp)
+
+. describe age_grp
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------
+age_grp         byte    %9.0g      age4       AGE GROUP
+
+. codebook age_grp
+
+--------------------------------------------------------------------------------------------------
+age_grp                                                                                  AGE GROUP
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: age4
+
+                 Range: [1,4]                         Units: 1
+         Unique values: 4                         Missing .: 0/4,327
+
+            Tabulation: Freq.   Numeric  Label
+                          850         1  60-70
+                        1,803         2  71-75
+                        1,077         3  76-80
+                          597         4  81-95
+
+. graph bar(count), by( age_grp)
+bar(count)graph_g invalid name
+r(198);
+
+. graph bar (count), over(age_grp)
+
+. graph bar(count), over( age_grp)
+bar(count)graph_g invalid name
+r(198);
+
+. graph bar(percent), over(age_grp)
+bar(percent)graph_g invalid name
+r(198);
+
+. graph bar(percent), over(age_grp)
+bar(percent)graph_g invalid name
+r(198);
+
+. graph bar (percent), over(age_grp)
+
+. codebook vitd
+
+--------------------------------------------------------------------------------------------------
+vitd                                                                                          VitD
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [18.915846,419.89304]         Units: 1.000e-06
+         Unique values: 103                       Missing .: 0/4,327
+
+                  Mean:   57.39
+             Std. dev.: 18.0018
+
+           Percentiles:     10%       25%       50%       75%       90%
+                        37.3376   45.6042   55.7011   66.6863   78.2571
+
+. br vitd
+
+. graph bar vitd, over(age_grp)
+
+. graph bar (median) vitd, over(age_grp)
+
+. help(graphO
+invalid something: unmatched open parenthesis or bracket
+
+r(198);
+
+. help(graph)
+
+. graph bar sbp, over(age_grp)
+
+. graph bar (percentage) sbp, over(age_grp)
+(ercentage) invalid statistic
+r(198);
+
+. graph bar (percent) sbp, over(age_grp)
+
+. codebook prior_cvd
+
+--------------------------------------------------------------------------------------------------
+prior_cvd                                                                                      CVD
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        3,249  0
+                        1,078  1
+
+. graph bar vitd, over( age_grp ) over( prior_cvd )
+
+. ***** ADDING TITLE TO Y AXIS *****
+
+. graph bar (mean) vitd, over(age_grp) ytitle(Mean Vitamin D Concentration)
+
+. graph bar (mean) vitd, over(age_grp) ytitle(Mean Vitamin D Concentration) ylabel(, nolabels)
+
+. graph bar (median) vitd, over(age_grp) ytitle(Median Vitamin D Concentration by Age)
+
+. tabstat vitd, by(age_grp)
+
+Summary for variables: vitd
+Group variable: age_grp (AGE GROUP)
+
+age_grp |      Mean
+--------+----------
+  60-70 |  61.71957
+  71-75 |  58.72979
+  76-80 |  55.55061
+  81-95 |  50.49752
+--------+----------
+  Total |  57.38998
+-------------------
+
+. tabstat vitd, by(age_grp) stat(n mean median sd iqr)
+
+Summary for variables: vitd
+Group variable: age_grp (AGE GROUP)
+
+age_grp |         N      Mean       p50        SD       IQR
+--------+--------------------------------------------------
+  60-70 |       850  61.71957  60.34029  20.29321  19.00741
+  71-75 |      1803  58.72979  57.97431   15.8061   21.9425
+  76-80 |      1077  55.55061  54.59815  18.88889  20.25549
+  81-95 |       597  50.49752  48.42421  16.73918  20.28413
+--------+--------------------------------------------------
+  Total |      4327  57.38998  55.70111  18.00183  21.08212
+-----------------------------------------------------------
+
+. codebook ldlc
+
+--------------------------------------------------------------------------------------------------
+ldlc                                                                                          LDLC
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [1.05,6.81]                   Units: .01
+         Unique values: 418                       Missing .: 25/4,327
+
+                  Mean: 3.36737
+             Std. dev.: .779852
+
+           Percentiles:     10%       25%       50%       75%       90%
+                           2.39      2.84      3.35      3.87      4.37
+
+. graph bar (mean) vitd, bar (1,fcolor(black)) ytitle(Mean vitamin D concentration)
+
+. histogram sbp
+(bin=36, start=86, width=4)
+
+. codebook bmi
+
+--------------------------------------------------------------------------------------------------
+bmi                                                                                            BMI
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [15,44]                       Units: 1
+         Unique values: 28                        Missing .: 17/4,327
+
+                  Mean: 25.2169
+             Std. dev.: 3.26241
+
+           Percentiles:     10%       25%       50%       75%       90%
+                             21        23        25        27        29
+
+. ******** HISTOGRM *********
+
+. histogram sbp
+(bin=36, start=86, width=4)
+
+. *** IF VARIABLE ISN'T CONTINUOUS, ADD DISCRETE TO THE END OF CODE ***
+
+. histogram bmi, discrete
+(start=15, width=1)
+
+. histogram bmi
+(bin=36, start=15, width=.80555556)
+
+. histogram bmi, discrete
+(start=15, width=1)
+
+. *** ADD NORMAL TO ADD NORMAL CURVE **
+
+. nistogram bmi, discrete normal
+command nistogram is unrecognized
+r(199);
+
+. histogram bmi, discrete normal
+(start=15, width=1)
+
+. histogram sbp, normal
+(bin=36, start=86, width=4)
+
+. tabstat sbp, stat(mean median)
+
+    Variable |      Mean       p50
+-------------+--------------------
+         sbp |  130.7515       129
+----------------------------------
+
+. histogram bmi, discrete normal
+(start=15, width=1)
+
+. tabstat bmi, stat(mean median)
+
+    Variable |      Mean       p50
+-------------+--------------------
+         bmi |  25.21694        25
+----------------------------------
+
+. histogram sbp, normal
+(bin=36, start=86, width=4)
+
+. tabstat sbp, stat(mean median)
+
+    Variable |      Mean       p50
+-------------+--------------------
+         sbp |  130.7515       129
+----------------------------------
+
+. **** ADJUST BIN NUMBER ***
+
+. histogram sbp, bin(20)
+(bin=20, start=86, width=7.2)
+
+. histogram bmi, discrete normal bin(20)
+options discrete and bin() may not be combined
+r(198);
+
+. histogram bmi, discrete bin(20)
+options discrete and bin() may not be combined
+r(198);
+
+. histogram bmi, bin(20)
+(bin=20, start=15, width=1.45)
+
+. *NB: Can't combine discrete and bin()
+
+. histogram bmi_grp4, discrete normal title("Body Mass Index") xlabel (1 "Underweight" 2 "Normal w
+> eight" 3 "Overweight" 4 "Obese")
+(start=1, width=1)
+
+. histogram bmi_grp4, discrete normal title("Body Mass Index") xlabel (1 "Underweight" 2 "Normal w
+> eight" 3 "Overweight" 4 "Obese")
+(start=1, width=1)
+
+. histogram bmi_grp4, discrete normal title("Body Mass Index") xlabel(1 "Underweight" 2 "Normal" 3
+>  "Overweight" 4 "Obese")
+(start=1, width=1)
+
+. ******* GROUPING CONTINUOUS DATA *******
+
+. *** XTITLE ***
+
+. ** xtile is useful for grouping continuous variable based on percentiles **
+
+. xtile sbp4=sbp, nquatiles(10)
+option nquatiles() not allowed
+r(198);
+
+. xtile sbp4=sbp, nquantiles(19)
+
+. browse sbp4
+
+. tab sbp4
+
+         19 |
+  quantiles |
+     of sbp |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |        248        5.74        5.74
+          2 |        247        5.72       11.46
+          3 |        221        5.12       16.58
+          4 |        258        5.97       22.56
+          5 |        199        4.61       27.17
+          6 |        200        4.63       31.80
+          7 |        306        7.09       38.88
+          8 |        229        5.30       44.19
+          9 |        200        4.63       48.82
+         10 |        215        4.98       53.80
+         11 |        200        4.63       58.43
+         12 |        206        4.77       63.20
+         13 |        254        5.88       69.08
+         14 |        245        5.67       74.76
+         15 |        209        4.84       79.60
+         16 |        220        5.09       84.69
+         17 |        230        5.33       90.02
+         18 |        204        4.72       94.74
+         19 |        227        5.26      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. drop sbp4
+
+. xtile sbp10=sbp, nquantiles(10)
+
+. xtile sbp4=sbp, nquantilse(4)
+option nquantilse() not allowed
+r(198);
+
+. xtile sbp4=sbp, nquantile(4)
+
+. tab sbp10
+
+         10 |
+  quantiles |
+     of sbp |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |        495       11.46       11.46
+          2 |        394        9.12       20.59
+          3 |        484       11.21       31.80
+          4 |        418        9.68       41.48
+          5 |        418        9.68       51.16
+          6 |        421        9.75       60.91
+          7 |        431        9.98       70.89
+          8 |        430        9.96       80.85
+          9 |        396        9.17       90.02
+         10 |        431        9.98      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. tab sbp4
+
+4 quantiles |
+     of sbp |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      1,173       27.17       27.17
+          2 |      1,036       23.99       51.16
+          3 |      1,094       25.34       76.49
+          4 |      1,015       23.51      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. drop sbp10 sbp4
+
+. browse
+
+. codebook fu_years
+
+--------------------------------------------------------------------------------------------------
+fu_years                                                                         FOLLOW UP (YEARS)
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [.03117036,8.5]               Units: 1.000e-09
+         Unique values: 2,907                     Missing .: 0/4,327
+
+                  Mean: 6.81234
+             Std. dev.: 2.23794
+
+           Percentiles:     10%       25%       50%       75%       90%
+                        2.80213   5.98447   7.75754       8.5       8.5
+
+. ** USING CUT WITH EGEN **
+
+. egen sbp_cat=sbp, at(0, 90, 120, 130, 231)
+unknown egen function sbp,()
+r(133);
+
+. egen sbp_cat=cut(sbp), at(0,90, 120, 130, 231)
+(9 missing values generated)
+
+. drop sbp_cat
+
+. egen sbp_cat=cut(sbp), at(0, 90, 120, 130, 231)
+(9 missing values generated)
+
+. *** solving questions **
+
+. histogram chol
+(bin=36, start=2.24, width=.23694446)
+
+. histogram chol, normal
+(bin=36, start=2.24, width=.23694446)
+
+. tabstat chol, stat(mean median)
+
+    Variable |      Mean       p50
+-------------+--------------------
+        chol |  5.510199      5.47
+----------------------------------
+
+. histogram chol, normal
+(bin=36, start=2.24, width=.23694446)
+
+. gen sbp_cat=recode(sbp, 90, 120, 130, 231)
+variable sbp_cat already defined
+r(110);
+
+. drop sbp_cat
+
+. gen sbp_cat=recode(sbp, 90, 120, 130, 231)
+(9 missing values generated)
+
+. tab sbp_cat
+
+    sbp_cat |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         90 |         10        0.23        0.23
+        120 |      1,280       29.64       29.87
+        130 |      1,033       23.92       53.80
+        231 |      1,995       46.20      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. drop sbp_cat
+
+. drop sbp_cat
+variable sbp_cat not found
+r(111);
+
+. gen sbp_cat=recode(sbp, 90, 120, 130, max)
+max not found
+r(111);
+
+. describe sbp
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------
+sbp             int     %8.0g                 SBP
+
+. summarize sbp
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         sbp |      4,318    130.7515    17.56559         86        230
+
+. gen sbp_cat=recode(sbp, 90, 120, 130, 231)
+(9 missing values generated)
+
+. tab bmi_cat
+variable bmi_cat not found
+r(111);
+
+. tab sbp_cat
+
+    sbp_cat |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         90 |         10        0.23        0.23
+        120 |      1,280       29.64       29.87
+        130 |      1,033       23.92       53.80
+        231 |      1,995       46.20      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. label variable "Systolic Blood Pressure Categories"
+"Systolic Blood Pressure Categories invalid name
+r(198);
+
+. label variable Systolic Blood Pressure Categories
+variable Systolic not found
+r(111);
+
+. label variabe sbp_cat "Systolic Blood Pressure Categories)
+invalid syntax
+r(198);
+
+. label variabe sbp_cat "Systolic Blood Pressure Categories"
+invalid syntax
+r(198);
+
+. label variable sbp_cat "Systolic Blood Pressure Categories"
+
+. drop sbp_cat
+
+. gen sbp_cat=recode(sbp, 90, 120, 130, 231)
+(9 missing values generated)
+
+. label var sbp_cat "Systolic Blood Pressure Category"
+
+. label define sbpcatlbl 1 "Low BP" 2 "Normal BP" 3 "High BP" 4 "Very High BP"
+
+. label values sbp_cat sbpcatlbl
+
+. tab sbp_cat
+
+    Systolic |
+       Blood |
+    Pressure |
+    Category |      Freq.     Percent        Cum.
+-------------+-----------------------------------
+          90 |         10        0.23        0.23
+         120 |      1,280       29.64       29.87
+         130 |      1,033       23.92       53.80
+         231 |      1,995       46.20      100.00
+-------------+-----------------------------------
+       Total |      4,318      100.00
+
+. browse
+
+. codebook
+
+--------------------------------------------------------------------------------------------------
+whl1_id                                                                                    WHL1_ID
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (int)
+
+                 Range: [10001,14327]                 Units: 1
+         Unique values: 4,327                     Missing .: 0/4,327
+
+                  Mean:   12164
+             Std. dev.: 1249.24
+
+           Percentiles:     10%       25%       50%       75%       90%
+                          10433     11082     12164     13246     13895
+
+--------------------------------------------------------------------------------------------------
+age_grp                                                                                  AGE GROUP
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: age4
+
+                 Range: [1,4]                         Units: 1
+         Unique values: 4                         Missing .: 0/4,327
+
+            Tabulation: Freq.   Numeric  Label
+                          850         1  60-70
+                        1,803         2  71-75
+                        1,077         3  76-80
+                          597         4  81-95
+
+--------------------------------------------------------------------------------------------------
+prior_cvd                                                                                      CVD
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        3,249  0
+                        1,078  1
+
+--------------------------------------------------------------------------------------------------
+prior_t2dm                                                                                    DIAB
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        4,067  0
+                          260  1
+
+--------------------------------------------------------------------------------------------------
+prior_cancer                                                                                CANCER
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        3,999  0
+                          328  1
+
+--------------------------------------------------------------------------------------------------
+sbp                                                                                            SBP
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (int)
+
+                 Range: [86,230]                      Units: 1
+         Unique values: 121                       Missing .: 9/4,327
+
+                  Mean: 130.752
+             Std. dev.: 17.5656
+
+           Percentiles:     10%       25%       50%       75%       90%
+                            111       119       129       141       153
+
+--------------------------------------------------------------------------------------------------
+bmi                                                                                            BMI
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [15,44]                       Units: 1
+         Unique values: 28                        Missing .: 17/4,327
+
+                  Mean: 25.2169
+             Std. dev.: 3.26241
+
+           Percentiles:     10%       25%       50%       75%       90%
+                             21        23        25        27        29
+
+--------------------------------------------------------------------------------------------------
+bmi_grp4                                                                                 BMI GROUP
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: bmi_grp4
+
+                 Range: [1,4]                         Units: 1
+         Unique values: 4                         Missing .: 17/4,327
+
+            Tabulation: Freq.   Numeric  Label
+                           50         1  Underweight
+                        1,793         2  Normal
+                        2,091         3  Overweight
+                          376         4  Obese
+                           17         .  
+
+--------------------------------------------------------------------------------------------------
+hdlc                                                                                          HDLC
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [.05,3.07]                    Units: .01
+         Unique values: 224                       Missing .: 25/4,327
+
+                  Mean: 1.09219
+             Std. dev.: .375501
+
+           Percentiles:     10%       25%       50%       75%       90%
+                            .65       .82      1.05      1.32      1.58
+
+--------------------------------------------------------------------------------------------------
+ldlc                                                                                          LDLC
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [1.05,6.81]                   Units: .01
+         Unique values: 418                       Missing .: 25/4,327
+
+                  Mean: 3.36737
+             Std. dev.: .779852
+
+           Percentiles:     10%       25%       50%       75%       90%
+                           2.39      2.84      3.35      3.87      4.37
+
+--------------------------------------------------------------------------------------------------
+chol                                                                                          CHOL
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [2.24,10.77]                  Units: .01
+         Unique values: 527                       Missing .: 5/4,327
+
+                  Mean:  5.5102
+             Std. dev.: 1.00712
+
+           Percentiles:     10%       25%       50%       75%       90%
+                           4.28      4.85      5.47      6.15      6.78
+
+--------------------------------------------------------------------------------------------------
+currsmoker                                                                              CURRSMOKER
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 6/4,327
+
+            Tabulation: Freq.  Value
+                        3,776  0
+                          545  1
+                            6  .
+
+--------------------------------------------------------------------------------------------------
+frailty                                                                                    FRAILTY
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [1,5]                         Units: 1
+         Unique values: 5                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        1,013  1
+                          800  2
+                          758  3
+                          902  4
+                          854  5
+
+--------------------------------------------------------------------------------------------------
+vitd                                                                                          VitD
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [18.915846,419.89304]         Units: 1.000e-06
+         Unique values: 103                       Missing .: 0/4,327
+
+                  Mean:   57.39
+             Std. dev.: 18.0018
+
+           Percentiles:     10%       25%       50%       75%       90%
+                        37.3376   45.6042   55.7011   66.6863   78.2571
+
+--------------------------------------------------------------------------------------------------
+cvd_death                                                                                CVD_DEATH
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        3,672  0
+                          655  1
+
+--------------------------------------------------------------------------------------------------
+death                                                                                        DEATH
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/4,327
+
+            Tabulation: Freq.  Value
+                        2,801  0
+                        1,526  1
+
+--------------------------------------------------------------------------------------------------
+fu_years                                                                         FOLLOW UP (YEARS)
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [.03117036,8.5]               Units: 1.000e-09
+         Unique values: 2,907                     Missing .: 0/4,327
+
+                  Mean: 6.81234
+             Std. dev.: 2.23794
+
+           Percentiles:     10%       25%       50%       75%       90%
+                        2.80213   5.98447   7.75754       8.5       8.5
+
+--------------------------------------------------------------------------------------------------
+sbp_cat                                                           Systolic Blood Pressure Category
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+                 Label: sbpcatlbl, but 4 nonmissing values are not labeled
+
+                 Range: [90,231]                      Units: 1
+         Unique values: 4                         Missing .: 9/4,327
+
+            Tabulation: Freq.   Numeric  Label
+                           10        90  
+                        1,280       120  
+                        1,033       130  
+                        1,995       231  
+                            9         .  
+
+. tab sbp_cat, missing
+
+    Systolic |
+       Blood |
+    Pressure |
+    Category |      Freq.     Percent        Cum.
+-------------+-----------------------------------
+          90 |         10        0.23        0.23
+         120 |      1,280       29.58       29.81
+         130 |      1,033       23.87       53.69
+         231 |      1,995       46.11       99.79
+           . |          9        0.21      100.00
+-------------+-----------------------------------
+       Total |      4,327      100.00
+
+. label values sbp_cat sbpcatlbl
+
+. tab sbp_cat, missing
+
+    Systolic |
+       Blood |
+    Pressure |
+    Category |      Freq.     Percent        Cum.
+-------------+-----------------------------------
+          90 |         10        0.23        0.23
+         120 |      1,280       29.58       29.81
+         130 |      1,033       23.87       53.69
+         231 |      1,995       46.11       99.79
+           . |          9        0.21      100.00
+-------------+-----------------------------------
+       Total |      4,327      100.00
+
+. label define sbpcatlbl 90 "Low BP" 120 "Normal BP" 130 "High BP" 231 "Very hight BP"
+label sbpcatlbl already defined
+r(110);
+
+. drop sbpcatlbl
+variable sbpcatlbl not found
+r(111);
+
+. label define sbpcatlbl2 90 "Low BP" 120 "Normal BP" 130 "High BP" 231 "Very hight BP"
+
+. label values sbp_cat sbpcatlbl2
+
+. tab sbp_cat
+
+     Systolic |
+        Blood |
+     Pressure |
+     Category |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+       Low BP |         10        0.23        0.23
+    Normal BP |      1,280       29.64       29.87
+      High BP |      1,033       23.92       53.80
+Very hight BP |      1,995       46.20      100.00
+--------------+-----------------------------------
+        Total |      4,318      100.00
+
+. histogram sbp_cat
+(bin=36, start=90, width=3.9166667)
+
+. histogram sbp_cat, discrete
+(start=90, width=10)
+
+. histogram sbp_cat, discrete normal
+(start=90, width=10)
+
+. sbp_cat sort
+command sbp_cat is unrecognized
+r(199);
+
+. sort(sbp_cat)
+
+. tab sbp_cat
+
+     Systolic |
+        Blood |
+     Pressure |
+     Category |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+       Low BP |         10        0.23        0.23
+    Normal BP |      1,280       29.64       29.87
+      High BP |      1,033       23.92       53.80
+Very hight BP |      1,995       46.20      100.00
+--------------+-----------------------------------
+        Total |      4,318      100.00
+
+. drop sbp_cat
+
+. gen sbp_cat = .
+(4,327 missing values generated)
+
+. replace sbp_cat = 1 if sbp < 90
+(9 real changes made)
+
+. replace sbp_cat = 1 if sbp <= 90
+(1 real change made)
+
+. replace sbp_cat = 1 if sbp > 90 & <=120
+<=120 invalid name
+r(198);
+
+. replace sbp_cat = 2 if sbp > 90 & <= 120
+<=120 invalid name
+r(198);
+
+. replace sbp_cat = 2 if sbp > 90 & =< 120
+= invalid name
+r(198);
+
+. replace sbp_cat = 2 if sbp > 90 & sbp <= 120
+(1,280 real changes made)
+
+. replace sbp_cat = 3 if sbp > 120 & sbp <= 130
+(1,033 real changes made)
+
+. replace sbp_cat = 3 if sbp > 120 & sbp <= 130
+(0 real changes made)
+
+. replace sbp_cat = 4 if sbp > 130 & sbp <= 230
+(1,995 real changes made)
+
+. tab sbp_cat
+
+    sbp_cat |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         10        0.23        0.23
+          2 |      1,280       29.64       29.87
+          3 |      1,033       23.92       53.80
+          4 |      1,995       46.20      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. tab sbp_cat, missing
+
+    sbp_cat |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         10        0.23        0.23
+          2 |      1,280       29.58       29.81
+          3 |      1,033       23.87       53.69
+          4 |      1,995       46.11       99.79
+          . |          9        0.21      100.00
+------------+-----------------------------------
+      Total |      4,327      100.00
+
+. label var sbp_cat "Systolic Blood Pressure Category"
+
+. labe define spblbl 1 "Low BP" 2 "Normal BP" 3 "High BP" 4 "Very high BP"
+
+. label values sbp_cat sbplbl
+
+. tab sbp_cat
+
+   Systolic |
+      Blood |
+   Pressure |
+   Category |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         10        0.23        0.23
+          2 |      1,280       29.64       29.87
+          3 |      1,033       23.92       53.80
+          4 |      1,995       46.20      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. label define spblbl 1 "Low BP" 2 "Normal BP" 3 "High BP" 4 "Very high BP"
+label spblbl already defined
+r(110);
+
+. label values sbp_cat sbplbl
+
+. tab sbp_cat
+
+   Systolic |
+      Blood |
+   Pressure |
+   Category |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         10        0.23        0.23
+          2 |      1,280       29.64       29.87
+          3 |      1,033       23.92       53.80
+          4 |      1,995       46.20      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. labe define spblbl2 1 "Low BP" 2 "Normal BP" 3 "High BP" 4 "Very high BP"
+
+. label values sbp_cat sbplbl2
+
+. tab sbp_cat
+
+   Systolic |
+      Blood |
+   Pressure |
+   Category |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         10        0.23        0.23
+          2 |      1,280       29.64       29.87
+          3 |      1,033       23.92       53.80
+          4 |      1,995       46.20      100.00
+------------+-----------------------------------
+      Total |      4,318      100.00
+
+. label values sbp_cat spblbl2
+
+. tab sbp_cat
+
+    Systolic |
+       Blood |
+    Pressure |
+    Category |      Freq.     Percent        Cum.
+-------------+-----------------------------------
+      Low BP |         10        0.23        0.23
+   Normal BP |      1,280       29.64       29.87
+     High BP |      1,033       23.92       53.80
+Very high BP |      1,995       46.20      100.00
+-------------+-----------------------------------
+       Total |      4,318      100.00
+
+. tab age_grp
+
+  AGE GROUP |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      60-70 |        850       19.64       19.64
+      71-75 |      1,803       41.67       61.31
+      76-80 |      1,077       24.89       86.20
+      81-95 |        597       13.80      100.00
+------------+-----------------------------------
+      Total |      4,327      100.00
+
+. codebook whl1_id
+
+--------------------------------------------------------------------------------------------------
+whl1_id                                                                                    WHL1_ID
+--------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (int)
+
+                 Range: [10001,14327]                 Units: 1
+         Unique values: 4,327                     Missing .: 0/4,327
+
+                  Mean:   12164
+             Std. dev.: 1249.24
+
+           Percentiles:     10%       25%       50%       75%       90%
+                          10433     11082     12164     13246     13895
+
+. sum whl1_id
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     whl1_id |      4,327       12164    1249.242      10001      14327
+
+. display 14327/2
+7163.5
+
+. gen wh_cat = recode(whl1_id, 7164, 14328)
+
+. tab wh_cat
+
+     wh_cat |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      14328 |      4,327      100.00      100.00
+------------+-----------------------------------
+      Total |      4,327      100.00
+
+. drop wh_cat
+
+. graph bar (count), over (age_grp)
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\Untitled.log
+  log type:  text
+ closed on:  13 Jun 2026, 04:22:15
+--------------------------------------------------------------------------------------------------
