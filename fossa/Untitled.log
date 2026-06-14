@@ -1238,3 +1238,37 @@ whl1_id                                                                         
   log type:  text
  closed on:  13 Jun 2026, 04:22:15
 --------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\Untitled.log
+  log type:  text
+ opened on:  14 Jun 2026, 04:46:29
+
+. use "C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\data\Whitehall_fossa.dta"
+
+. ci mean sbp
+
+    Variable |        Obs        Mean    Std. err.       [95% conf. interval]
+-------------+---------------------------------------------------------------
+         sbp |      4,318    130.7515    .2673138        130.2274    131.2756
+
+. ci means sbp
+
+    Variable |        Obs        Mean    Std. err.       [95% conf. interval]
+-------------+---------------------------------------------------------------
+         sbp |      4,318    130.7515    .2673138        130.2274    131.2756
+
+. ci mean bmi
+
+    Variable |        Obs        Mean    Std. err.       [95% conf. interval]
+-------------+---------------------------------------------------------------
+         bmi |      4,310    25.21694    .0496936        25.11951    25.31436
+
+. *** CALCULATING STANDARD ERROR AND CONFIDENCE INTERVAL USING ABOVE CODE ***
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\emson\Desktop\Files\Code\Stata\learning_stata\fossa\Untitled.log
+  log type:  text
+ closed on:  14 Jun 2026, 04:51:15
+--------------------------------------------------------------------------------------------------
